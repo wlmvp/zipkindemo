@@ -1,0 +1,6 @@
+*.log
+*/.mvn/*
+*/mvnw
+/springtest1/src/test/java/com/icbc/springtest1/Springtest1ApplicationTests.java/springtest2/src/test/java/com/icbc/springtest1/Springtest1ApplicationTests.java
+/springtest3/src/test/java/com/icbc/springtest1/Springtest1ApplicationTests.java
+/springtest4/src/test/java/com/icbc/springtest1/Springtest1ApplicationTests.java
