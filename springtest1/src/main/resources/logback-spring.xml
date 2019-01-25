@@ -4,7 +4,8 @@
     ​
     <springProperty scope="context" name="springAppName" source="spring.application.name"/>
     <!-- Example for logging into the build folder of your project -->
-    <property name="LOG_FILE" value="logs\\${springAppName}.log"/>​
+    <!--<property name="LOG_FILE" value="logs\\${springAppName}.log"/>​-->
+    <property name="LOG_FILE" value="logs"/>​
 
     <!-- You can override this to have a custom pattern -->
 
@@ -22,44 +23,60 @@
         </encoder>
     </appender>
     <!--&lt;!&ndash; Appender to log to file &ndash;&gt;​-->
-    <!--<appender name="flatfile" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
-        <!--<file>${LOG_FILE}${traceId}</file>-->
-        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
-            <!--<fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.gz</fileNamePattern>-->
-            <!--<maxHistory>7</maxHistory>-->
-        <!--</rollingPolicy>-->
-        <!--<encoder>-->
-            <!--<pattern>${CONSOLE_LOG_PATTERN}</pattern>-->
-            <!--<charset>utf8</charset>-->
-        <!--</encoder>-->
-    <!--</appender>-->
-
-    <appender name="FILE_CUSTOM" class="ch.qos.logback.classic.sift.SiftingAppender">
-        <!-- discriminator 的默认实现类 ch.qos.logback.classic.sift.MDCBasedDiscriminator -->
-        <discriminator>
-            <key>traceId</key>
-            <defaultValue>MyFile</defaultValue>
-        </discriminator>
-        <sift>
-            <!-- 标准的文件输出 Appender, 文件名根据 MDC 动态生成  -->
-            <appender name="FILE-${traceId}" class="ch.qos.logback.core.rolling.RollingFileAppender">
-                <file>${LOG_FILE}/${traceId}.log</file>
-                <!-- 最常用的滚动策略，它根据时间来制定滚动策略.既负责滚动也负责出发滚动 -->
-                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                    <!--日志输出位置  可相对、和绝对路径 -->
-                    <fileNamePattern>${LOG_FILE}/%d{yyyy-MM-dd}/${traceId}.log</fileNamePattern>
-                </rollingPolicy>
-                <encoder charset="UTF-8">
-                    <pattern>${CONSOLE_LOG_PATTERN}</pattern>
-                </encoder>
-            </appender>
-        </sift>
+    <appender name="flatfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--<file>${LOG_FILE}</file>-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE}/%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
     </appender>
+
+    <appender name="testfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--<file>${LOG_FILE}</file>-->
+        <filter class="com.wl.springtest1.logUtils.TestFilter"/>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE}_test/%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <!--<appender name="FILE_CUSTOM" class="ch.qos.logback.classic.sift.SiftingAppender">-->
+        <!--&lt;!&ndash; discriminator 的默认实现类 ch.qos.logback.classic.sift.MDCBasedDiscriminator &ndash;&gt;-->
+        <!--<discriminator>-->
+            <!--<key>traceId</key>-->
+            <!--<defaultValue>MyFile</defaultValue>-->
+        <!--</discriminator>-->
+        <!--<sift>-->
+            <!--&lt;!&ndash; 标准的文件输出 Appender, 文件名根据 MDC 动态生成  &ndash;&gt;-->
+            <!--<appender name="FILE-${traceId}" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+                <!--<file>${LOG_FILE}/${traceId}.log</file>-->
+                <!--<filter class="com.wl.springtest1.logUtils.TestFilter">-->
+                <!--</filter>-->
+                <!--&lt;!&ndash; 最常用的滚动策略，它根据时间来制定滚动策略.既负责滚动也负责出发滚动 &ndash;&gt;-->
+                <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+                    <!--&lt;!&ndash;日志输出位置  可相对、和绝对路径 &ndash;&gt;-->
+                    <!--<fileNamePattern>${LOG_FILE}/%d{yyyy-MM-dd}/${traceId}.log</fileNamePattern>-->
+                <!--</rollingPolicy>-->
+                <!--<encoder charset="UTF-8">-->
+                    <!--<pattern>${CONSOLE_LOG_PATTERN}</pattern>-->
+                <!--</encoder>-->
+            <!--</appender>-->
+        <!--</sift>-->
+    <!--</appender>-->
     ​
     ​
     <root level="INFO">
         <appender-ref ref="console"/>
         <!-- uncomment this to have also JSON logs -->
-        <appender-ref ref="FILE_CUSTOM"/>
+        <appender-ref ref="testfile"/>
+        <appender-ref ref="flatfile"/>
     </root>
 </configuration>
